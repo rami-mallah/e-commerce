@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>About us</h1>
+<div class="container">
+    <div class="half">
+        <p>
+        <span class="name">Concept B</span> is a family business that takes care of bees and produces all natural products that come from this amazing insect. &#128029;
+        <br>
+        We also welcome families, students and anyone who is interested in learning more about nature and this wonderful insect in our bee farms in Dlebta, Kfardebian, Bikfaya, and Tannourine.
+        <br><br>
+        During these difficult times, we left Greece and came to Lebanon to start here, hoping and believing that this country would rise up again. <br>
+        Concept B is your choice of <span class="highlight">100% natural</span> products just as nature and bees produce them.
+        </p>
+    </div>
+    <div class="mosaic">
+        <div class="mosaic-item">
+            <img src="{{ url_for('static', filename='images/about1.jpg') }}" alt="">
+        </div>
+        <div class="mosaic-item">
+            <img src="{{ url_for('static', filename='images/about2.jpg') }}" alt="">
+        </div>
+    </div>
+</div>
+{% endblock %}

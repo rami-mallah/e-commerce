@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if items %}
+<h1>Cart</h1>
+<div style="display: flex; margin-top: 15px;">
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td><div style="display: flex; align-items: center;"><img class="table-img" src="{{ url_for('static', filename='images') }}/{{ item.product.imageURL }}">{{ item.product.name }}</div></td>
+            <td class="center">
+                <div class="quantity-container">
+                    <div class="btn-change-num" style="display: flex; justify-content: center; align-items: center;" onclick="location.href='/update-item/{{ item.id }}/{{ item.quantity - 1 }}'"><div>-</div></div>
+                    {{ item.quantity }}
+                    <div class="btn-change-num" style="display: flex; justify-content: center; align-items: center;" onclick="location.href='/update-item/{{ item.id }}/{{ item.quantity + 1 }}'">+</div>
+                    <a class="delete" href="/delete-item/{{item.id}}"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+            <td class="center">
+                {% set price = (item.product.price*item.quantity)|string %}
+                {% if 3 > price|length %}
+                    {{ price }} 000 LBP
+                {% else %}
+                    {{ price[:-3] }} {{ price[-3:] }} 000 LBP
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div id="confirm">
+    <h3 style="text-align: center;">Order Price :
+        {% set price = order_price|string %}
+        {% if 3 > price|length %}
+            {{ price }} 000 LBP
+        {% else %}
+            {{ price[:-3] }} {{ price[-3:] }} 000 LBP
+        {% endif %}
+    </h3>
+    <a class="btn-add" style="height: 20px;" href="/confirm-order/{{order_id}}">Confirm Order</a>
+</div>
+
+{% else %}
+    <h1>Your cart is empty</h1>
+    <div style="display: flex;">
+        <a class="btn-shop" href="{{ url_for('home') }}">Start shopping now</a>
+    </div>
+{% endif %}
+{% endblock %}

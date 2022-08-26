@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <title>Concept B</title>
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/conceptb_icon.png') }}">
+    </head>
+    <body>
+
+    <!-- For large screens -->
+    <header>
+        <nav>
+            <ul id="left">
+                <li><a href="#" onclick="dropdown1()">Orders <i id="order-caret" class="fa fa-caret-right"></i></a></li>
+                <li><a href="#" onclick="dropdown2()">Products <i id="product-caret" class="fa fa-caret-right"></i></a></li>
+            </ul>
+            <ul id="right">
+                <li><a href="{{ url_for('account') }}">Account</a></li>
+            </ul>
+        </nav>
+        <div id="dropdown1" class="dropdown">
+            <div class="drop-link" onclick="location.href='/orders/ordered'">Ordered</div>
+            <div class="drop-link" onclick="location.href='/orders/delivered'">Delivered</div>
+        </div>
+        <div id="dropdown2" class="dropdown">
+            <div class="drop-link" onclick="location.href='/update'">Update</div>
+            <div class="drop-link" onclick="location.href='/add'">Add</div>
+        </div>
+    </header>
+
+    <!-- This one is for small screens -->
+    <div class="topnav">
+        <a href="#" class="active">Concept B</a>
+        <div id="myLinks">
+            <a href="{{ url_for('orders', genre='ordered') }}">Ordered</a>
+            <a href="{{ url_for('orders', genre='delivered') }}">Delivered</a>
+            <a href="{{ url_for('orders', genre='ordered') }}">Update</a>
+            <a href="{{ url_for('orders', genre='ordered') }}">Add</a>
+            <a href="{{ url_for('account') }}">Account</a> 
+        </div>
+        <a href="#" class="icon" onclick="hideFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    </body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin.js') }}"></script>
+</html>

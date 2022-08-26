@@ -1,0 +1,47 @@
+{% extends "layout_admin.html" %}
+{% block content %}
+{% if genre == 'ordered' %}
+<h1>Ordered orders</h1>
+{% else %}
+<h1>Delivered orders</h1>
+{% endif %}
+<table style="margin-top: 15px;">
+    <tr>
+        <th>Order ID</th>
+        <th>User Phone</th>
+        <th>Address</th>
+        <th>Items</th>
+        <th>Total</th>
+        <th>Change Status</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td class="center">{{ order.id }}</td>
+        <td class="center">{{ order.user.phone }}</td>
+        <td class="center">{{ order.user.location }}</td>
+        <td>
+            <ul style="padding-left : 1.5em; margin-bottom: 5px; list-style-type: square;">
+                {% for item in order.items %}
+                <li>{{ item.quantity }} {{ item.product.name }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td class="center">
+            {% set price =  order.get_full_price()|string %}
+            {% if 3 > price|length %}
+                {{ price }} 000 LBP
+            {% else %}
+                {{ price[:-3] }} {{ price[-3:] }} 000 LBP
+            {% endif %}
+        </td>
+        <td class="center">
+            {% if genre == 'ordered' %}
+            <a class="btn-add" style="height: 20px;" href="/delivered/{{order.id}}">Delivered</a>
+            {% else %}
+            <a class="btn-add" style="height: 20px;" href="/ordered/{{order.id}}">Ordered</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

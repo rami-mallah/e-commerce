@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slider.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <title>Concept B</title>
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/conceptb_icon.png') }}">
+    </head>
+    <body>
+
+    <!-- For large screens -->
+    <header>
+        <nav>
+            <ul id="left">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('about') }}">About us</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact us</a></li>
+            </ul>
+            <ul id="right">
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('account') }}">Account</a></li>
+                <li onmouseover="dark()" onmouseout="light()"><a id="cart" href="{{ url_for('cart') }}"><i class="fa fa-lg fa-shopping-cart"></i>  Cart  <span class="items-number">{{ no_items }}</span></a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul> 
+        </nav>
+    </header>
+
+    <!-- This one is for small screens -->
+    <div class="topnav">
+        <a href="#" class="active">Concept B</a>
+        <div id="myLinks">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About us</a>
+            <a href="{{ url_for('contact') }}">Contact us</a>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('account') }}">Account</a>
+            <a href="{{ url_for('cart') }}"><i class="fa fa-lg fa-shopping-cart"></i>  Cart  <span class="items-number">{{ no_items }}</span></a>
+            {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+            
+        </div>
+        <a href="#" class="icon" onclick="hideFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+    </body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</html>

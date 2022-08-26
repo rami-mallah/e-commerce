@@ -1,0 +1,101 @@
+{% if admin == True %}
+    {% extends "layout_admin.html" %}
+{% else %}
+    {% extends "layout.html" %}
+{% endif %}
+{% block content %}
+<h1>Account</h1>
+<div class="form-container" style="margin: 20px auto;">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                {% if form.email.errors %}
+                    {{ form.email(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.phone.label(class="form-control-label") }}
+                {% if form.phone.errors %}
+                    {{ form.phone(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.phone.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.phone(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.location.label(class="form-control-label") }}
+                {% if form.location.errors %}
+                    {{ form.location(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.location.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.location(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        
+            <div class="btn-holder">
+                <div class="form-group">
+                    {{ form.submit(class="btn") }}
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-red" href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+{% if (admin == False) and orders|length > 0  %}
+<h1 style="padding-top: 0px; padding-bottom: 20px;">Order History</h1>
+<table style="margin-bottom: 20px;">
+    <tr>
+        <th>Items</th>
+        <th>Total</th>
+        <th>Status</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td class="center">
+            <ul style="padding-left : 0em; margin-bottom: 5px; list-style-type: none;">
+                {% for item in order.items %}
+                <li>{{ item.quantity }} {{ item.product.name }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td class="center">
+            {% set price =  order.get_full_price()|string %}
+            {% if 3 > price|length %}
+                {{ price }} 000 LBP
+            {% else %}
+                {{ price[:-3] }} {{ price[-3:] }} 000 LBP
+            {% endif %}
+        </td>
+        <td class="center">
+            {% if order.status == 'Delivered' %}
+                Delivered <i class="fa fa-check-square-o" style="color: green;"></i>
+            {% else %}
+                Preparing <i class="fa fa-spinner" style="color: rgb(78, 78, 78);"></i>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}
