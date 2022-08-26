@@ -1,4 +1,3 @@
-from itertools import product
 from flask import render_template, url_for, flash, redirect, request, abort
 from conceptb import app, db, bcrypt
 from conceptb.forms import RegistrationForm, LoginForm, UpdateAccountForm
