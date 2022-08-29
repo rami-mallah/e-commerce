@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from conceptb.models import User
 
@@ -51,3 +52,9 @@ class UpdateAccountForm(FlaskForm):
             num = num[1:]
         if num.isnumeric() == False:
             raise ValidationError('That phone number is invalid. Please verify it.')
+
+class AddProductForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    price = IntegerField('Price', validators=[DataRequired()])
+    image = FileField('Image :', validators=[DataRequired(), FileAllowed(['jpg', 'jpeg', 'png'])])
+    submit = SubmitField('Add product')

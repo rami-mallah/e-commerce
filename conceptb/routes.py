@@ -1,6 +1,9 @@
+import os
+import secrets
+from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from conceptb import app, db, bcrypt
-from conceptb.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from conceptb.forms import RegistrationForm, LoginForm, UpdateAccountForm, AddProductForm
 from conceptb.models import User, Order, OrderItem, Product
 from flask_login import login_user, current_user, logout_user, login_required
 from pytz import timezone
@@ -225,6 +228,34 @@ def delete_product(product_id):
     Product.query.get(product_id).is_deleted = True
     db.session.commit()
     return redirect(url_for('update_products'))
+
+def save_image(form_image):
+    random_hex = secrets.token_hex(8)
+    _, file_ext = os.path.splitext(form_image.filename)
+    image_filename = random_hex + file_ext
+    image_path = os.path.join(app.root_path, 'static/images', image_filename)
+
+    output_size = (300, 300)
+    i = Image.open(form_image)
+    i.thumbnail(output_size)
+    i.save(image_path)
+
+    return image_filename
+
+@app.route('/add-new-product', methods=['GET', 'POST'])
+@login_required
+def add_new_product():
+    if current_user.is_admin == False:
+        abort(403)
+    form = AddProductForm()
+    if form.validate_on_submit():
+        image_file = save_image(form.image.data)
+        new_product = Product(name=form.name.data, price=form.price.data, imageURL=image_file)
+        db.session.add(new_product)
+        db.session.commit()
+        flash('The new product has been added!', 'success')
+        return redirect(url_for('update_products'))
+    return render_template('add_product.html', form=form)
 
 # errors
 
