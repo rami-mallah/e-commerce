@@ -1,9 +1,9 @@
 {% extends "layout_admin.html" %}
 {% block content %}
 {% if genre == 'ordered' %}
-<h1>Ordered orders</h1>
+<h1>Ordered Orders</h1>
 {% else %}
-<h1>Delivered orders</h1>
+<h1>Delivered Orders</h1>
 {% endif %}
 <table style="margin-top: 15px;">
     <tr>
@@ -11,11 +11,12 @@
         <th>User Phone</th>
         <th>Address</th>
         <th>Items</th>
+        <th>Date</th>
         <th>Total</th>
         <th>Change Status</th>
     </tr>
     {% for order in orders %}
-    <tr>
+    <tr style="height: 50px;">
         <td class="center">{{ order.id }}</td>
         <td class="center">{{ order.user.phone }}</td>
         <td class="center">{{ order.user.location }}</td>
@@ -27,6 +28,9 @@
             </ul>
         </td>
         <td class="center">
+            {{ order.date_ordered.strftime('%b %d, %Y') }}
+        </td>
+        <td class="center">
             {% set price =  order.get_full_price()|string %}
             {% if 3 > price|length %}
                 {{ price }} 000 LBP
@@ -36,9 +40,9 @@
         </td>
         <td class="center">
             {% if genre == 'ordered' %}
-            <a class="btn-add" style="height: 20px;" href="/delivered/{{order.id}}">Delivered</a>
+            <a class="btn-add" href="/delivered/{{order.id}}">Delivered</a>
             {% else %}
-            <a class="btn-add" style="height: 20px;" href="/ordered/{{order.id}}">Ordered</a>
+            <a class="btn-add" href="/ordered/{{order.id}}">Ordered</a>
             {% endif %}
         </td>
     </tr>

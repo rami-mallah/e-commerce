@@ -1,0 +1,23 @@
+{% extends "layout_admin.html" %}
+{% block content %}
+<h1>Update Products</h1>
+<table>
+    <tr>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    {% for product in products %}
+        <tr style="height: 50px;">
+            <td class="center"><input class="form-control" type="text" id="name{{product.id}}" value="{{ product.name }}"></td>
+            <td class="center">
+                <input class="price-input" type="number" id="price{{product.id}}" value="{{ product.price }}">
+                <span> 000 LBP</span>
+            </td>
+            <td class="center"><a class="btn-add" href="#" onclick="updateProduct({{ product.id|tojson }})">Update</a></td>
+            <td class="center"><a class="btn-delete" href="/delete-product/{{product.id}}">Delete</a></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

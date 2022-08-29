@@ -3,6 +3,8 @@ from conceptb import app, db, bcrypt
 from conceptb.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from conceptb.models import User, Order, OrderItem, Product
 from flask_login import login_user, current_user, logout_user, login_required
+from pytz import timezone
+from datetime import datetime
 
 def num_items():
     if current_user.is_authenticated:
@@ -18,7 +20,7 @@ def num_items():
 @app.route('/home')
 def home():
     no_items = num_items()
-    products = Product.query.all()
+    products = Product.query.filter_by(is_deleted=False).all()
     return render_template('home.html', no_items=no_items, products=products)
 
 @app.route('/about')
@@ -96,9 +98,9 @@ def account():
             if order.status in ['Ordered', 'Delivered']:
                 orders.append(order)
         
-        def status(order):
-            return order.status
-        orders.sort(key=status)
+        def date_ord(order):
+            return order.date_ordered
+        orders.sort(reverse=True, key=date_ord)
 
     return render_template('account.html', form=form, no_items=no_items, admin=admin, orders=orders)
 
@@ -152,6 +154,8 @@ def update_item(item_id, new_quantity):
 def confirm(order_id):
     order = Order.query.get(order_id)
     order.status = 'Ordered'
+    lebanon = timezone('Asia/Beirut')
+    order.date_ordered = datetime.now(lebanon)
     new_order = Order(status='In progress', user=current_user)
     db.session.add(new_order)
     db.session.commit()
@@ -169,8 +173,10 @@ def orders(genre):
     if current_user.is_admin == False:
         abort(403)
     if genre in ['ordered', 'delivered']:
-        orders = Order.query.filter_by(status=genre.title()).all()
-    else: 
+        orders = Order.query.filter_by(status=genre.title()).order_by(Order.date_ordered.desc()).all()
+        if genre == 'ordered':
+            orders.reverse()
+    else:
         abort(404)
     return render_template('orders.html', genre=genre, orders=orders)
 
@@ -183,7 +189,6 @@ def delivered(order_id):
     db.session.commit()
     return redirect(url_for('orders', genre='ordered'))
 
-
 @app.route('/ordered/<int:order_id>')
 @login_required
 def ordered(order_id):
@@ -193,6 +198,33 @@ def ordered(order_id):
     db.session.commit()
     return redirect(url_for('orders', genre='delivered'))
 
+@app.route('/update-products')
+@login_required
+def update_products():
+    if current_user.is_admin == False:
+        abort(403)
+    products = Product.query.filter_by(is_deleted=False).all()
+    return render_template('update_products.html', products=products)
+
+@app.route('/update-product/<int:product_id>/<new_name>/<int:new_price>')
+@login_required
+def update_product(product_id, new_name, new_price):
+    if current_user.is_admin == False:
+        abort(403)
+    product = Product.query.get(product_id)
+    product.name = new_name
+    product.price = new_price
+    db.session.commit()
+    return redirect(url_for('update_products'))
+
+@app.route('/delete-product/<int:product_id>')
+@login_required
+def delete_product(product_id):
+    if current_user.is_admin == False:
+        abort(403)
+    Product.query.get(product_id).is_deleted = True
+    db.session.commit()
+    return redirect(url_for('update_products'))
 
 # errors
 

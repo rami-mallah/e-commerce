@@ -66,6 +66,7 @@
 <table style="margin-bottom: 20px;">
     <tr>
         <th>Items</th>
+        <th>Date Ordered</th>
         <th>Total</th>
         <th>Status</th>
     </tr>
@@ -77,6 +78,9 @@
                 <li>{{ item.quantity }} {{ item.product.name }}</li>
                 {% endfor %}
             </ul>
+        </td>
+        <td class="center">
+            {{ order.date_ordered.strftime('%b %d, %Y') }}
         </td>
         <td class="center">
             {% set price =  order.get_full_price()|string %}

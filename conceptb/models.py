@@ -22,6 +22,7 @@ class Product(db.Model):
     name = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=False)
     imageURL = db.Column(db.String, nullable=False)
+    is_deleted = db.Column(db.Boolean, default=False)
     items = db.relationship('OrderItem', backref='product', lazy=True)
 
     def __repr__(self):
@@ -31,6 +32,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     status = db.Column(db.String, nullable=False)
+    date_ordered = db.Column(db.DateTime)
     items = db.relationship('OrderItem', backref='order', lazy=True)
 
     def get_num_items(self):
@@ -46,7 +48,7 @@ class Order(db.Model):
         return price
 
     def __repr__(self):
-        return f"Order('{self.status}', UserID:'{self.user_id}')"
+        return f"Order(OrderID:'{self.id}', UserID:'{self.user_id}, '{self.status}', Date:'{self.date_ordered}')"
 
 class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)

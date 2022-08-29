@@ -38,6 +38,12 @@ function dropdown2() {
     }
 }
 
+function updateProduct(product_id) {
+    var name = document.getElementById(`name${product_id}`).value;
+    var price = document.getElementById(`price${product_id}`).value;
+    window.location.replace(`/update-product/${product_id}/${name}/${price}`)
+}
+
 const elements1 = [document.getElementById("left")];
 const elements2 = document.getElementsByClassName("dropdown");
 var elements = elements1.concat([...elements2]);

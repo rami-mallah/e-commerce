@@ -40,7 +40,7 @@
         <span class="num-items" id="span{{ product.id }}">1</span>
         <div class="btn-num" onclick='upQuantities({{ product.id|tojson }})'>+</div>
       </div>
-      <a class="btn-add" id="link{{ product.id }}" href="/add-product/{{ product.id }}/1">Add</a>
+      <a class="btn-add" id="link{{ product.id }}" href="/add-product/{{ product.id }}/1">Buy</a>
     </div>
     <div class="price">
       {% set price = product.price|string %}
