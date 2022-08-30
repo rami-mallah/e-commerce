@@ -38,3 +38,11 @@ function downQuantities(index) {
     link.setAttribute('href', new_href);
   }
 }
+
+function addPopup() {
+  document.getElementsByClassName('popup-container')[0].style.display = 'flex';
+}
+
+function removePopup() {
+  document.getElementsByClassName('popup-container')[0].style.display = 'none';
+}

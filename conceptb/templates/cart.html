@@ -1,6 +1,53 @@
 {% extends "layout.html" %}
 {% block content %}
 {% if items %}
+<div class="popup-container">
+    <div class="popup">
+        <h2 style="margin: 15px 50px; text-align: center;" >Please check your information below</h2>
+        <div class="form-container">
+            <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group"  style="border: none;">
+                <div class="form-group">
+                    {{ form.location.label(class="form-control-label") }}
+                    {% if form.location.errors %}
+                        {{ form.location(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.location.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.location(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.phone.label(class="form-control-label") }}
+                    {% if form.phone.errors %}
+                        {{ form.phone(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.phone.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.phone(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            
+                <div class="btn-holder">
+                    <div class="form-group">
+                        <a class="btn btn-red" href="#" onclick="removePopup()">Cancel</a>
+                    </div>
+                    <div class="form-group">
+                        {{ form.submit(class="btn") }}
+                    </div>
+                </div>
+            </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
 <h1>Cart</h1>
 <div style="display: flex; margin-top: 15px;">
     <table>
@@ -23,7 +70,7 @@
             <td class="center">
                 {% set price = (item.product.price*item.quantity)|string %}
                 {% if 3 > price|length %}
-                    {{ price }} 000 LBP
+                    {{ price }} 000 LBPs
                 {% else %}
                     {{ price[:-3] }} {{ price[-3:] }} 000 LBP
                 {% endif %}
@@ -41,7 +88,7 @@
             {{ price[:-3] }} {{ price[-3:] }} 000 LBP
         {% endif %}
     </h3>
-    <a class="btn-add" style="height: 20px;" href="/confirm-order/{{order_id}}">Confirm Order</a>
+    <a class="btn-add" style="height: 20px;" href="#" onclick="addPopup()">Order</a>
 </div>
 
 {% else %}

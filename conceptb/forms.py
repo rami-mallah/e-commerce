@@ -58,3 +58,15 @@ class AddProductForm(FlaskForm):
     price = IntegerField('Price', validators=[DataRequired()])
     image = FileField('Image :', validators=[DataRequired(), FileAllowed(['jpg', 'jpeg', 'png'])])
     submit = SubmitField('Add product')
+
+class ConfirmOrderForm(FlaskForm):
+    location = StringField('Your address', validators=[DataRequired()])
+    phone = StringField('Phone', validators=[DataRequired()])
+    submit = SubmitField('Confirm')
+
+    def validate_phone(self, phone):
+        num = phone.data
+        if num.startswith('+'):
+            num = num[1:]
+        if num.isnumeric() == False:
+            raise ValidationError('That phone number is invalid. Please verify it.')
