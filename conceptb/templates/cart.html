@@ -68,12 +68,7 @@
                 </div>
             </td>
             <td class="center">
-                {% set price = (item.product.price*item.quantity)|string %}
-                {% if 3 > price|length %}
-                    {{ price }} 000 LBPs
-                {% else %}
-                    {{ price[:-3] }} {{ price[-3:] }} 000 LBP
-                {% endif %}
+                {{ item.product.price*item.quantity }}$
             </td>
         </tr>
         {% endfor %}
@@ -81,12 +76,7 @@
 </div>
 <div id="confirm">
     <h3 style="text-align: center;">Order Price :
-        {% set price = order_price|string %}
-        {% if 3 > price|length %}
-            {{ price }} 000 LBP
-        {% else %}
-            {{ price[:-3] }} {{ price[-3:] }} 000 LBP
-        {% endif %}
+        {{ order_price }}$
     </h3>
     <a class="btn-add" style="height: 20px;" href="#" onclick="addPopup()">Order</a>
 </div>

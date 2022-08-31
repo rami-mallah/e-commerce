@@ -83,7 +83,7 @@ nav a:hover {
     position: absolute;
     right: 0;
     top: 0;
-    padding : 16.5px 18px;
+    padding : 16px 18px;
 }
 
 .topnav a:hover {
@@ -313,7 +313,8 @@ small {
 }
 
 .price {
-    margin: 7px 0.6em;
+    margin: 7px 0;
+    margin-left: 10px;
     font-size: 1.1em;
 }
 
@@ -527,7 +528,7 @@ td {
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     text-align: right;
-    width: 63px;
+    width: 55px;
 }
 
 .form-control-file {

@@ -55,7 +55,7 @@ class UpdateAccountForm(FlaskForm):
 
 class AddProductForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    price = IntegerField('Price', validators=[DataRequired()])
+    price = IntegerField('Price in USD', validators=[DataRequired()])
     image = FileField('Image :', validators=[DataRequired(), FileAllowed(['jpg', 'jpeg', 'png'])])
     submit = SubmitField('Add product')
 

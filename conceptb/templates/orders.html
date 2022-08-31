@@ -31,12 +31,7 @@
             {{ order.date_ordered.strftime('%b %d, %Y') }}
         </td>
         <td class="center">
-            {% set price =  order.get_full_price()|string %}
-            {% if 3 > price|length %}
-                {{ price }} 000 LBP
-            {% else %}
-                {{ price[:-3] }} {{ price[-3:] }} 000 LBP
-            {% endif %}
+            {{ order.get_full_price() }}$
         </td>
         <td class="center">
             {% if genre == 'ordered' %}

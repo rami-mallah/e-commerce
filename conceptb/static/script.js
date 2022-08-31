@@ -2,10 +2,16 @@ function hideFunction() {
     var x = document.getElementById("myLinks");
     if (x.style.display === "block") {
       x.style.display = "none";
+      menu = document.getElementsByClassName('icon')[0];
+      menu.style.color = '#ddd';
+      menu.style.backgroundColor = '#333';
     } else {
       x.style.display = "block";
+      menu = document.getElementsByClassName('icon')[0];
+      menu.style.color = 'black';
+      menu.style.backgroundColor = '#ddd';
     }
-  }
+}
 
 function dark() {
   var x = document.getElementById("cart");

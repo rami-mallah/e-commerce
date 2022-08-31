@@ -43,12 +43,7 @@
       <a class="btn-add" id="link{{ product.id }}" href="/add-product/{{ product.id }}/1">Buy</a>
     </div>
     <div class="price">
-      {% set price = product.price|string %}
-      {% if 3 > price|length %}
-          {{ price }} 000 LBP
-      {% else %}
-          {{ price[:-3] }} {{ price[-3:] }} 000 LBP
-      {% endif %}
+      Price : {{ product.price }}$
     </div>
   </div>
   {% endfor %}
